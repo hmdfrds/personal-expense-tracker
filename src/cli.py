@@ -5,6 +5,8 @@ from data_access import *
 from rich.console import Console
 from rich.table import Table
 
+from reports import report_by_category, report_by_month
+
 console = Console()
 
 @click.group()
@@ -50,6 +52,14 @@ def edit(id, date,amount, category, description):
         console.print(f"[green]Expense {id} updated![/green]")
     else:
         console.print("[yellow]Expense ID not found![/yellow]")
+
+@cli.command
+@click.option("--type", type=click.Choice(["month", "category"], case_sensitive=False), prompt="Report type (month/category)")
+def report(type):
+    if type == "month":
+        report_by_month()
+    elif type == "category":
+        report_by_category()
 
 if __name__ == "__main__":
     cli()
