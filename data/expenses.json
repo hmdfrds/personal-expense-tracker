@@ -1,0 +1,18 @@
+{
+    "expenses": [
+        {
+            "id": "555cb655-783d-438d-b86d-8b280516d35e",
+            "date": "30-03-2025",
+            "amount": 50.0,
+            "category": "Transport",
+            "description": "Bus ticket"
+        },
+        {
+            "id": "4d0600df-0084-40c4-81df-2e1eed381ab4",
+            "date": "30-03-2025",
+            "amount": 25.0,
+            "category": "Food",
+            "description": "Coffee"
+        }
+    ]
+}

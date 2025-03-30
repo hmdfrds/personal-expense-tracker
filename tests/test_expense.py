@@ -28,7 +28,7 @@ def test_invalid_date():
         )
 
 
-def test_to_json():
+def test_to_dict():
     expense = Expense(
         date="14-02-2025",
         amount=29.99,
@@ -36,29 +36,24 @@ def test_to_json():
         description="Lunch",
     )
 
-    json_data = expense.to_json()
-    data = json.loads(json_data)
-
-    assert data["id"] is not None
-    assert data["date"] == "14-02-2025"
-    assert data["amount"] == 29.99
-    assert data["category"] == "Food"
-    assert data["description"] == "Lunch"
+    expense_dict = expense.to_dict()
+    assert expense_dict["id"] is not None
+    assert expense_dict["date"] == "14-02-2025"
+    assert expense_dict["amount"] == 29.99
+    assert expense_dict["category"] == "Food"
+    assert expense_dict["description"] == "Lunch"
 
 
-def test_from_json():
-    json_str = json.dumps(
-        {
-            "id": "1234",
-            "date": "14-02-2025",
-            "amount": 29.99,
-            "category": "Food",
-            "description": "Lunch",
-        }
-    )
+def test_from_dict():
+    json_str = {
+        "id": "1234",
+        "date": "14-02-2025",
+        "amount": 29.99,
+        "category": "Food",
+        "description": "Lunch",
+    }
 
-    expense = Expense.from_json(json_str)
-
+    expense = Expense.from_dict(json_str)
     assert expense.id == "1234"
     assert expense.date == "14-02-2025"
     assert expense.amount == 29.99

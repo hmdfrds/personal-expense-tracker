@@ -1,9 +1,15 @@
 import uuid
 from datetime import datetime
 import json
+from dataclasses import dataclass, asdict
 
-
+@dataclass
 class Expense:
+    id: str
+    date: str
+    amount: float
+    category: str
+    description: str
 
     def __init__(
         self, date: str, amount: float, category: str, description: str, id: str = None
@@ -21,14 +27,15 @@ class Expense:
             return date_str
         except ValueError:
             raise ValueError("Invalid date format. Use DD-MM-YYYY.")
+    def to_dict(self):
+        return asdict(self)
 
-    def to_json(self) -> str:
-        return json.dumps(self.__dict__)
-
-    @classmethod
-    def from_json(cls, json_str: str):
-        data = json.loads(json_str)
-        return cls(**data)
-
-    def __str__(self):
-        return f"Expense(id={self.id}, date={self.date}, amount={self.amount}, category={self.category}, description={self.description})"
+    @staticmethod
+    def from_dict(data: dict):
+        return Expense(
+            id=data["id"],
+            date=data["date"],
+            amount=data["amount"],
+            category=data["category"],
+            description=data["description"],
+        )
