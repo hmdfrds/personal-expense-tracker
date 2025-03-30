@@ -13,6 +13,13 @@
             "amount": 25.0,
             "category": "Food",
             "description": "Coffee"
+        },
+        {
+            "id": "3cc3fc34-9b08-4647-878e-b1b4716ba0fb",
+            "date": "30-03-2025",
+            "amount": 30.0,
+            "category": "Food",
+            "description": "Snack"
         }
     ]
 }
