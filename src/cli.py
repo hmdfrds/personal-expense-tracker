@@ -79,6 +79,16 @@ def search_category(category):
         console.print(f"[yellow]No expenses found in category: {category}[/yellow]")
 
 
+@cli.command()
+@click.option("--file", prompt="Export file path", help="Path to save exported data")
+def export(file):
+    export_data(file)
+
+@cli.command()
+@click.option("--file", prompt="Import file path", help="Path to import JSON data from")
+def import_expenses(file):
+    import_data(file)
+
 def display_expenses(expenses, title = "Expense Records"):
     table = Table(title=title )
     table.add_column("ID", style="cyan", no_wrap=True)
