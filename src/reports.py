@@ -45,3 +45,15 @@ def report_by_category():
         table.add_row(category, f"${total:.2f}")
 
     console.print(table)
+
+def filter_by_date_range(start_date, end_date):
+    expenses = load_expenses()
+    start = datetime.strptime(start_date, "%d-%m-%Y")
+    end = datetime.strptime(end_date, "%d-%m-%Y")
+    filtered = [exp for exp in expenses if start <= datetime.strptime(exp.date, "%d-%m-%Y") <= end]
+    return filtered
+
+def filter_by_cateogry(category):
+    expenses = load_expenses()
+    filtered = [exp for exp in expenses if exp.category == category]
+    return filtered

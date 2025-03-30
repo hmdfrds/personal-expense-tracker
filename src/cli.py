@@ -1,3 +1,4 @@
+from datetime import datetime
 from email.policy import default
 import click
 from expense import Expense
@@ -5,7 +6,7 @@ from data_access import *
 from rich.console import Console
 from rich.table import Table
 
-from reports import report_by_category, report_by_month
+from reports import filter_by_cateogry, filter_by_date_range, report_by_category, report_by_month
 
 console = Console()
 
@@ -29,16 +30,7 @@ def list():
     if not expenses:
         console.print("[yellow]No expenses recorded yet.[/yellow]")
         return
-    table = Table(title="Expense Records")
-    table.add_column("ID", style="cyan", overflow='ignore')
-    table.add_column("Date", style="magenta")
-    table.add_column("Amount", style="green")
-    table.add_column("Category", style="blue")
-    table.add_column("Description", style="white")
-
-    for exp in expenses:
-        table.add_row(exp.id[:8], exp.date, f"${exp.amount:.2f}", exp.category, exp.description)
-    console.print(table)
+    display_expenses(expenses)
 
 @cli.command()
 @click.option("--id", prompt="Expense ID", help="ID of the expense to edit")
@@ -60,6 +52,45 @@ def report(type):
         report_by_month()
     elif type == "category":
         report_by_category()
+
+@cli.command()
+@click.option("--start", prompt="Start date (DD-MM-YYYY)", help="Start of date range")
+@click.option("--end", prompt="End date (DD-MM-YYYY)", help="End of date range")
+def search_date(start, end):
+    try:
+        datetime.strptime(start, "%d-%m-%Y")
+        datetime.strptime(end, "%d-%m-%Y")
+    except ValueError:
+        console.print("[red]Invalid date format! User DD-MM-YYYY.[/red]")
+        return
+    results = filter_by_date_range(start,end)
+    if results:
+        display_expenses(results)
+    else:
+        console.print("[yellow]No expenses found in this date range.[/yellow]")
+        
+@cli.command()
+@click.option("--category", prompt="Category", help="Filter by category")
+def search_category(category):
+    results = filter_by_cateogry(category)
+    if results:
+        display_expenses(results)
+    else: 
+        console.print(f"[yellow]No expenses found in category: {category}[/yellow]")
+
+
+def display_expenses(expenses, title = "Expense Records"):
+    table = Table(title=title )
+    table.add_column("ID", style="cyan", no_wrap=True)
+    table.add_column("Date", style="magenta")
+    table.add_column("Amount", style="green")
+    table.add_column("Category", style="blue")
+    table.add_column("Description", style="white")
+    
+    for exp in expenses:
+        table.add_row(exp.id[:8], exp.date, f"${exp.amount:.2f}", exp.category, exp.description)
+
+    console.print(table)
 
 if __name__ == "__main__":
     cli()
