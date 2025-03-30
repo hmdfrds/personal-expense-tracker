@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
-import json
 from dataclasses import dataclass, asdict
+
 
 @dataclass
 class Expense:
@@ -27,6 +27,7 @@ class Expense:
             return date_str
         except ValueError:
             raise ValueError("Invalid date format. Use DD-MM-YYYY.")
+
     def to_dict(self):
         return asdict(self)
 

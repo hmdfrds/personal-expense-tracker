@@ -1,6 +1,5 @@
 import os
 import json
-from xmlrpc.client import Boolean
 from expense import Expense
 from rich.console import Console
 
@@ -40,7 +39,7 @@ def delete_expense(id: str):
     new_expenses = [expense for expense in expenses if expense.id != id]
     save_expenses(new_expenses)
 
-def update_expense(id, new_data) -> Boolean:
+def update_expense(id, new_data) -> bool:
     expenses = load_expenses()
     for expense in expenses:
         if expense.id == id:
@@ -79,7 +78,7 @@ def import_data(file_path):
             console.print(f"[red]Failed to import data: {e}[/red]")
             return
     confirm = input("This will overwrite existing data. Proceed? (y/n): ").strip()
-    if confirm.casefold() != "y".casefold():
+    if confirm != "y".casefold():
         console.print("[yellow]Import cancelled.[/yellow]")
         return
 
